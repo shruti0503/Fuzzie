@@ -7,7 +7,7 @@ import { menuOptions } from '@/lib/constants/constants'
 import clsx from 'clsx'
 import { Separator } from "@/components/ui/separator"
 import { LucideMousePointerClick , GitBranch, Database} from 'lucide-react'
-import ModeToggle from '../global/mode-toggle'
+import { ModeToggle } from '../global/mode-toggle'
 
 import {
     Tooltip,
