@@ -21,5 +21,36 @@ model User {
   name         String?
   email        String  @unique
   profileImage String?
- 
+  tier         String? @default("Free")
+  credits      String? @default("10")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  localGoogleId String? @unique
+  googleResourceId String? @unique
+
+  LocalGoogleCredential LocalGoogleCredential?
+  DiscordWebhook DiscordWebhook[]
+  Notion Notion[]
+  Slack Slack[]
+  connections Connections[]
+  workflows workflows[]
+}
+
+model LocalGoogleCredential{
+  id String @id @default(uuid())
+  accessToken String @unique
+  folderId String?
+  pageToken String?
+  channelId String @unique @default(uuid())
+  subscribed Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int @unique
+  user User @relation(fields:[userId], references:[id])
+
+}
+
+model DiscordWebhook{
+  
 }
