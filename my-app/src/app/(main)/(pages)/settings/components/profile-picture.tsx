@@ -1,8 +1,9 @@
 'use client'
 import React from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { X } from 'lucide-react'
+import { UserMinusIcon, X } from 'lucide-react'
+import UploadCareBtn from './uploadcare-btn'
 
 
 type Props = {
@@ -11,10 +12,29 @@ type Props = {
     onUpload:any
 }
 
-const ProfilePicture = (props: Props) => {
+const ProfilePicture = ({userImage, onDelete , onUpload}: Props) => {
+    const router=useRouter()
+    const onRemoveProfileImage=async()=>{
+        const response=await onDelete()
+        if(response){
+            router.refresh()
+        }
+    }
   return (
     <div className='flex flex-col'>
         <p className='text-lg text-white'>Profile Picture</p>
+        <div className='flex h-[-30vh] flex-col items-center justify-center'>
+            {/* {
+                userImage ? (
+                    <>
+                    </>
+                )
+            } */}
+
+            <UploadCareBtn  onUpload={onUpload}/>
+
+
+        </div>
 
     </div>
   )
