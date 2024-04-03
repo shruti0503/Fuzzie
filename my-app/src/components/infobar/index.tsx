@@ -4,6 +4,7 @@ import { ModeToggle } from '../global/mode-toggle'
 import { Book, Headphones, Search } from 'lucide-react'
 import Templates from '../icons/cloud_download'
 import { Input } from '@/components/ui/input'
+import { UserButton } from '@clerk/nextjs'
 
 import {
     Tooltip,
@@ -47,7 +48,7 @@ const InfoBar = (props: Props) => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      {/* <UserButton /> */}
+      <UserButton />
 
         </div>
     </div>

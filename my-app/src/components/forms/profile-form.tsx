@@ -20,10 +20,12 @@ import { Button } from '../ui/button'
 import { Loader2 } from 'lucide-react'
 
 type Props = {
+  user:any,
+  onUpdate?:any
  
 }
 
-const ProfileForm = ({ }: Props) => {
+const ProfileForm = ({ user, onUpdate}: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<z.infer<typeof EditUserProfileSchema>>({
     mode: 'onChange',
@@ -38,13 +40,13 @@ const ProfileForm = ({ }: Props) => {
     values: z.infer<typeof EditUserProfileSchema>
   ) => {
     setIsLoading(true)
-   // await onUpdate(values.name)
+    await onUpdate(values.name)
     setIsLoading(false)
   }
 
-//   useEffect(() => {
-//     form.reset({ name: user.name, email: user.email })
-//   }, [user])
+  useEffect(() => {
+    form.reset({ name: user.name, email: user.email })
+  }, [user])
 
   return (
     <Form {...form}>
