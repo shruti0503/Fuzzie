@@ -1,13 +1,17 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react';
+import { useRouter,  } from 'next/router';
+import { redirect } from 'next/navigation'
 
-// if the user comes with the id then render those workflows after looking in the database
-type Props = {}
+const Page = () => {
+  
 
-const Page = (props: Props) => {
-  return (
-    <div>Page</div>
-  )
-}
+  useEffect(() => {
+    // Navigate to /workflow/editor/[id]
+     redirect('/workflows/editor/2');
+  }, []); 
 
-export default Page
+  return <div>Page</div>;
+};
 
+export default Page;
