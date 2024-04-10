@@ -34,7 +34,7 @@ function EditorCanvas(props: Props) {
     const {dispatch,state}=useEditor();
     const[ nodes, setNodes]=useState(initialNodes)
     const [edges, setEdges]=useState(initialEdges)
-    const [isWorkFlowInstance, setIsWorkFlowLoading]=useState<boolean>(false)
+    const [isWorkFlowLoading, setIsWorkFlowLoading]=useState<boolean>(false)
     const [ReactFlowInstance, setReactFlowInstance]=useState<ReactFlowInstance>()
     const pathname=usePathname()
     
@@ -46,13 +46,43 @@ function EditorCanvas(props: Props) {
         event.dataTransfer.dropEffect = 'move'
       }, []) //he onDragOver function ensures that the default behavior of disallowing dropping is prevented during a dragover event on the editor canvas. It also specifies the drop effect as 'move' to indicate that the draggable element can be moved when dropped onto the canvas.
 
-      
+     const  onNodesChange=useCallback((event:any)=>{
+
+       // setNodes((nds)=>applyNodeChanges(changes,nds))
+
+    },[setNodes])
+
+
 
 
 
 
   return (
-    <div>EditorCanvas</div>
+  <ResizablePanelGroup direction="horizontal">
+    <ResizablePanel defaultSize={70}>
+        <div className='flex h-full items-center justify-center'>
+            <div  style={{ width: '100%', height: '100%', paddingBottom: '70px' }}
+            className="relative">
+
+               {
+                  isWorkFlowLoading ? (
+
+                    <div className='absolute flex h-full w-full'>
+
+                    </div>
+
+                  ) : (
+
+                  )  
+               }
+
+            </div>
+
+        </div>
+
+    </ResizablePanel>
+
+  </ResizablePanelGroup>
   )
 }
 
