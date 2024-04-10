@@ -37,6 +37,56 @@ function EditorCanvas(props: Props) {
     const [isWorkFlowLoading, setIsWorkFlowLoading]=useState<boolean>(false)
     const [ReactFlowInstance, setReactFlowInstance]=useState<ReactFlowInstance>()
     const pathname=usePathname()
+
+    const onDrop = useCallback(
+        (event: any) => {
+          event.preventDefault()
+    
+          const type: EditorCanvasCardType['type'] = event.dataTransfer.getData(
+            'application/reactflow'
+          )
+    
+          // check if the dropped element is valid
+          if (typeof type === 'undefined' || !type) {
+            return
+          }
+    
+          const triggerAlreadyExists = state.editor.elements.find(
+            (node) => node.type === 'Trigger'
+          )
+    
+          if (type === 'Trigger' && triggerAlreadyExists) {
+            toast('Only one trigger can be added to automations at the moment')
+            return
+          }
+    
+          // reactFlowInstance.project was renamed to reactFlowInstance.screenToFlowPosition
+          // and you don't need to subtract the reactFlowBounds.left/top anymore
+          // details: https://reactflow.dev/whats-new/2023-11-10
+          if (!reactFlowInstance) return
+          const position = reactFlowInstance.screenToFlowPosition({
+            x: event.clientX,
+            y: event.clientY,
+       })
+
+       const newNode = {
+        id: v4(),
+        type,
+        position,
+        data: {
+          title: type,
+          description: EditorCanvasDefaultCardTypes[type].description,
+          completed: false,
+          current: false,
+          metadata: {},
+          type: type,
+        },
+      }
+      //@ts-ignore
+      setNodes((nds) => nds.concat(newNode))
+    },
+    [reactFlowInstance, state]
+  )
     
     // to handle the dragover event. 
     //triggered when a draggable element is being dragged over a drop target, in this case, the editor canvas.
@@ -51,6 +101,26 @@ function EditorCanvas(props: Props) {
        // setNodes((nds)=>applyNodeChanges(changes,nds))
 
     },[setNodes])
+
+    const onNodesChange = useCallback(
+        (changes: NodeChange[]) => {
+          //@ts-ignore
+          setNodes((nds) => applyNodeChanges(changes, nds))
+        },
+        [setNodes]
+      )
+    
+      const onEdgesChange = useCallback(
+        (changes: EdgeChange[]) =>
+          //@ts-ignore
+          setEdges((eds) => applyEdgeChanges(changes, eds)),
+        [setEdges]
+      )
+    
+      const onConnect = useCallback(
+        (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+        []
+      )
 
 
 
