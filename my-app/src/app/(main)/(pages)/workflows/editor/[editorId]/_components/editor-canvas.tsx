@@ -1,5 +1,5 @@
 'use client'
-import { EditorCanvasCardType, EditorNodeType } from '@/lib/types'
+import { EditorCanvasCardType, EditorNodeType } from '@/lib/types' 
 import { useEditor } from '@/providers/editor-provider'
 import React , {useCallback , useEffect, useMemo , useState} from 'react'
 import ReactFlow, { 
@@ -18,7 +18,7 @@ import ReactFlow, {
 
 } from 'reactflow'
 import { EditorCanvasDefaultCardTypes } from '@/lib/constants/constants'
-
+import { useNodeConnections } from '@/providers/connection-providers'
 
 import 'reactflow/dist/style.css'
 import EditorCanvasCardSingle from './editor-canvas-card'
@@ -26,11 +26,13 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { toast } from 'sonner'
 import { usePathname } from 'next/navigation'
 import { v4 as uuidv4 } from 'uuid';
+import FlowInstance from './flowInstance'
 
 
 type Props = {}
 const initialNodes:EditorNodeType[]=[]
 const initialEdges:{id:string, source:string, target:string}[]=[]
+const {nodeConnection}=useNodeConnections()
 
 function EditorCanvas(props: Props) {
 
@@ -213,7 +215,23 @@ function EditorCanvas(props: Props) {
 
             ):
             (
-                <></>
+                <>
+                  {/* For manegeing the workflow instance , inluding saving and publishing the workflow 
+                  and updating the sstate iof the workfloe saving and publishing the workflow as well as updating the state of the workflow based ion the conections between node
+                   */}
+                <FlowInstance 
+                
+                edges={edges}
+                nodes={nodes}
+                >
+                    {/* in the flowsinstance comp props ami we have set the reactNode also , agr as a children we will not pass 
+                    we will get error  */}
+
+                <> </>
+
+                </FlowInstance>
+                
+                </>
 
             )
         }
