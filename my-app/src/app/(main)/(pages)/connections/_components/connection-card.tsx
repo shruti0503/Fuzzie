@@ -6,22 +6,22 @@ import { Card, CardFooter, CardDescription, CardTitle, CardHeader } from "@/comp
 
 
 type Props ={
-    //type: ConnectionTypes
+    type: ConnectionTypes
     icon: string
     title: ConnectionTypes
     description:string 
-   // callback?:()=>void
-   // connected:{} & any
+     callback?:()=>void
+    connected:{} & any
 }
 
 
 
 const ConnectionCard=({
     description,
-   // type,
+    type,
     icon,
     title,
-    //connected
+    connected
 }:Props)=>{
     console.log("icon is", icon)
 

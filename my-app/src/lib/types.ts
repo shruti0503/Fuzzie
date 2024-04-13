@@ -17,7 +17,7 @@ export type Connection={
     description: string
     image: string
     connectionKey: keyof ConnectionProviderProps
-    accessTokeKey?: String
+    accessTokeKey: String
     alwaysTrue?: boolean
     slackSpecial?:boolean
 }
@@ -87,4 +87,11 @@ export type EditorActions =
       payload: {
         element: EditorNode
       }
+    }
+
+    export const nodeMapper: Record<string, string> = {
+      Notion: 'notionNode',
+      Slack: 'slackNode',
+      Discord: 'discordNode',
+      'Google Drive': 'googleNode',
     }

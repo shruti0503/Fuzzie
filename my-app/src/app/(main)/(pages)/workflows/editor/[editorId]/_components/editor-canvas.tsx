@@ -25,10 +25,10 @@ import EditorCanvasCardSingle from './editor-canvas-card'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { toast } from 'sonner'
 import { usePathname } from 'next/navigation'
-//import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import FlowInstance from './flowInstance'
 import EditorCanvasSidebar from './editor-canvas-sidebar'
-
+import { onGetNodesEdges } from '../_actions/workFlowConnections'
 
 type Props = {}
 const initialNodes:EditorNodeType[]=[]
@@ -47,12 +47,15 @@ function EditorCanvas(props: Props) {
     const pathname=usePathname()
 
     const onDrop = useCallback(
+         
+       
+      
         (event: any) => {
           event.preventDefault()
-    
           const type: EditorCanvasCardType['type'] = event.dataTransfer.getData(
             'application/reactflow'
           )
+          console.log("type", type)
     
           // check if the dropped element is valid
           if (typeof type === 'undefined' || !type) {
@@ -78,7 +81,7 @@ function EditorCanvas(props: Props) {
        })
 
        const newNode = {
-        //id: v4(),
+        id: uuidv4(),
         type,
         position,
         data: {
@@ -100,7 +103,7 @@ function EditorCanvas(props: Props) {
     //triggered when a draggable element is being dragged over a drop target, in this case, the editor canvas.
     const onDragOver = useCallback((event: any) => { //This object contains information about the dragover event, such as the coordinates of the mouse pointer.
         event.preventDefault()
-        console.log("onDragPver", event)
+        // console.log("onDragPver", event)
         event.dataTransfer.dropEffect = 'move'
       }, []) //he onDragOver function ensures that the default behavior of disallowing dropping is prevented during a dragover event on the editor canvas. It also specifies the drop effect as 'move' to indicate that the draggable element can be moved when dropped onto the canvas.
 
@@ -127,12 +130,65 @@ function EditorCanvas(props: Props) {
       )
 
 
-    //   const handleClickCanavas=()=>{
-    //     dispatch({
+      const handleClickCanvas = () => {
+        dispatch({
+          type: 'SELECTED_ELEMENT',
+          payload: {
+            element: {
+              data: {
+                completed: false,
+                current: false,
+                description: '',
+                metadata: {},
+                title: '',
+                type: 'Trigger',
+              },
+              id: '',
+              position: { x: 0, y: 0 },
+              type: 'Trigger',
+            },
+          },
+        })
+      }
 
-    //     })
+
+      useEffect(() => {
+        dispatch({ type: 'LOAD_DATA', payload: { edges, elements: nodes } })
+      }, [nodes, edges])
+
+      const nodeTypes = useMemo(
+        () => ({
+          Action: EditorCanvasCardSingle,
+          Trigger: EditorCanvasCardSingle,
+          Email: EditorCanvasCardSingle,
+          Condition: EditorCanvasCardSingle,
+          AI: EditorCanvasCardSingle,
+          Slack: EditorCanvasCardSingle,
+          'Google Drive': EditorCanvasCardSingle,
+          Notion: EditorCanvasCardSingle,
+          Discord: EditorCanvasCardSingle,
+          'Custom Webhook': EditorCanvasCardSingle,
+          'Google Calendar': EditorCanvasCardSingle,
+          Wait: EditorCanvasCardSingle,
+        }),
+        []
+      )
+
+    //   const onGetWorkFlow = async () => {
+    //     setIsWorkFlowLoading(true)
+    //     const response = await onGetNodesEdges(pathname.split('/').pop()!)
+    //     if (response) {
+    //       setEdges(JSON.parse(response.edges!))
+    //       setNodes(JSON.parse(response.nodes!))
+    //       setIsWorkFlowLoading(false)
+    //     }
+    //     setIsWorkFlowLoading(false)
     //   }
 
+
+    //   useEffect(() => {
+    //     onGetWorkFlow()
+    //   }, [])
 
 
 
@@ -169,6 +225,18 @@ function EditorCanvas(props: Props) {
                   ) : (
 
                     <ReactFlow 
+                    className="w-[300px]"
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                    nodes={state.editor.elements}
+                    onNodesChange={onNodesChange}
+                    edges={edges}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    onInit={setReactFlowInstance}
+                    fitView
+                    onClick={handleClickCanvas}
+                    nodeTypes={nodeTypes}
                     >
                         <Controls  position='top-left'/>
                         <MiniMap  position='bottom-left' zoomable pannable/>
@@ -226,7 +294,6 @@ function EditorCanvas(props: Props) {
                 edges={edges}
                 nodes={nodes}
                 >
-                    wnwj
                     {/* in the flowsinstance comp props ami we have set the reactNode also , agr as a children we will not pass 
                     we will get error  */}
 

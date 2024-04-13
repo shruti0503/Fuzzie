@@ -12,13 +12,14 @@ import { EditorCanvasDefaultCardTypes } from "@/lib/constants/constants"
 
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import EditorCanvasIconHelper from "./editor-canvas-card-icon-helper"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "@radix-ui/react-accordion"
+import { Accordion , AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
 
 import RenderConnectionAccordian from "./RenderConnectionAccordian"
 import { Console } from "console"
 import { onDragStart } from "@/lib/editor-utils"
+//import RenderConnectionAccordian from "./RenderConnectionAccordian"
 
-
+import RenderOutputAccordion from "./RenderOutputAccordian"
 
 
 type Props={
@@ -41,6 +42,9 @@ const EditorCanvasSidebar=({nodes}:Props)=>{
            (!nodes.length && cardType.type == 'Trigger') ||
            (!nodes.length && cardType.type == 'Action')
        ))
+
+       console.log("connections", CONNECTIONS)
+       console.log( "edior", state.editor.selectedNode.data.title)
 
     },[])
 
@@ -84,7 +88,40 @@ const EditorCanvasSidebar=({nodes}:Props)=>{
                 </TabsContent>
 
                 <TabsContent value="settings" className="flex flex-col gap-4 p-4">
-                  setting
+                <div className="px-2 py-4 text-center text-xl font-bold">
+                    {state.editor.selectedNode.data.title}
+                </div>
+                <Accordion type="multiple">
+            <AccordionItem
+              value="Options"
+              className="border-y-[1px] px-2"
+            >
+              <AccordionTrigger className="!no-underline">
+                Account
+              </AccordionTrigger>
+              <AccordionContent>
+                {CONNECTIONS.map((connection) => (
+                  <RenderConnectionAccordian
+                    key={connection.title}
+                    state={state}
+                    connection={connection}
+                  />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem
+              value="Expected Output"
+              className="px-2"
+            >
+              <AccordionTrigger className="!no-underline">
+                Action
+              </AccordionTrigger>
+              <RenderOutputAccordion
+                state={state}
+                nodeConnection={nodeConnection}
+              />
+            </AccordionItem>
+          </Accordion>
                 </TabsContent>
             </Tabs>
 
