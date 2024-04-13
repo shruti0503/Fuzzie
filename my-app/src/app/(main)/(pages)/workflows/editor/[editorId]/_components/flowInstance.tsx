@@ -32,13 +32,13 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
         JSON.stringify(isFlow)
     )
 
-    if(flow) Toast.message(flow.message)
+    //if(flow) Toast.message(flow.message)
 
  },[nodeConnection])
 
  const onPublishWorkflow = useCallback(async()=>{
     const response=await onFlowPublish(pathname.split('/').pop()!, true)
-    if(response) Toast.message(response)
+    //if(response) // Toast.message(response)
 
  },[])
 
@@ -49,7 +49,7 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
     const connectedEdges = edges.map((edge) => edge.target)
     // for each target , seahces thright the nodes array to find the -> node with same id 
     connectedEdges.map((target) => {
-      nodes.map((node) => {
+      nodes.forEach((node) => {
         if (node.id === target) { // if the id matches 
           flows.push(node.type) // retrive its type property and push it into flows array
         }

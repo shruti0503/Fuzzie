@@ -25,17 +25,19 @@ import EditorCanvasCardSingle from './editor-canvas-card'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { toast } from 'sonner'
 import { usePathname } from 'next/navigation'
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid';
 import FlowInstance from './flowInstance'
+import EditorCanvasSidebar from './editor-canvas-sidebar'
 
 
 type Props = {}
 const initialNodes:EditorNodeType[]=[]
 const initialEdges:{id:string, source:string, target:string}[]=[]
-const {nodeConnection}=useNodeConnections()
+
 
 function EditorCanvas(props: Props) {
 
+    const {nodeConnection}=useNodeConnections()
 
     const {dispatch,state}=useEditor();
     const[ nodes, setNodes]=useState(initialNodes)
@@ -76,7 +78,7 @@ function EditorCanvas(props: Props) {
        })
 
        const newNode = {
-        id: v4(),
+        //id: v4(),
         type,
         position,
         data: {
@@ -125,11 +127,11 @@ function EditorCanvas(props: Props) {
       )
 
 
-      const handleClickCanavas=()=>{
-        dispatch({
+    //   const handleClickCanavas=()=>{
+    //     dispatch({
 
-        })
-      }
+    //     })
+    //   }
 
 
 
@@ -224,12 +226,14 @@ function EditorCanvas(props: Props) {
                 edges={edges}
                 nodes={nodes}
                 >
+                    wnwj
                     {/* in the flowsinstance comp props ami we have set the reactNode also , agr as a children we will not pass 
                     we will get error  */}
 
-                <> </>
+                  <></>
 
                 </FlowInstance>
+                <EditorCanvasSidebar nodes={nodes} />
                 
                 </>
 
