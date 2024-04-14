@@ -47,3 +47,34 @@ export const onContentChange = (
       onNotionContent(nodeConnection, event)
     }
   }
+
+  export const onAddTemplate=(nodeConnection:ConnectionProviderProps, title:String, template:string)=>{
+
+    if(title==='Slack'){
+        onAddTemplateSlack(nodeConnection, template);
+    }
+    else if(title==='Discord'){
+        onAddTemplateDiscord(nodeConnection, template);
+    }
+
+  }
+
+  export const onAddTemplateSlack = (
+    nodeConnection: ConnectionProviderProps,
+    template: string
+  ) => {
+    nodeConnection.setSlackNode((prev: any) => ({
+      ...prev,
+      content: `${prev.content} ${template}`,
+    }))
+  }
+  
+  export const onAddTemplateDiscord = (
+    nodeConnection: ConnectionProviderProps,
+    template: string
+  ) => {
+    nodeConnection.setDiscordNode((prev: any) => ({
+      ...prev,
+      content: `${prev.content} ${template}`,
+    }))
+  }

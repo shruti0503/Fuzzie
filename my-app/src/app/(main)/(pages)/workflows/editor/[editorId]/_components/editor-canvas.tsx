@@ -46,6 +46,8 @@ function EditorCanvas(props: Props) {
     const [reactFlowInstance, setReactFlowInstance]=useState<ReactFlowInstance>()
     const pathname=usePathname()
 
+    console.log("ediotr state", state)
+
     const onDrop = useCallback(
          
        

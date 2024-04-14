@@ -10,7 +10,7 @@ type Props ={
     icon: string
     title: ConnectionTypes
     description:string 
-     callback?:()=>void
+    callback?:()=>void
     connected:{} & any
 }
 

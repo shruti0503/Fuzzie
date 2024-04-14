@@ -21,9 +21,9 @@ const Connections = (props: Props) => {
                      key={connection.title}
                      description={connection.description}
                      title={connection.title}
-                     //type={connection.type}
+                     type={connection.type}
                      icon={connection.image}
-                    // connected={connections}
+                     connected={connections}
                   
                       />
                 ))
