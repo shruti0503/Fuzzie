@@ -5,7 +5,7 @@ import { ConnectionsProvider, useNodeConnections } from "@/providers/connection-
 import { useEditor } from "@/providers/editor-provider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import React, {useEffect} from "react"
+import React, {useCallback, useEffect} from "react"
 import { Separator } from "@radix-ui/react-separator"
 import { CONNECTIONS } from "@/lib/constants/constants"
 import { EditorCanvasDefaultCardTypes } from "@/lib/constants/constants"
@@ -18,9 +18,9 @@ import RenderConnectionAccordian from "./RenderConnectionAccordian"
 import { Console } from "console"
 import { onDragStart } from "@/lib/editor-utils"
 //import RenderConnectionAccordian from "./RenderConnectionAccordian"
-
+import { useFuzzieStore } from "@/store"
 import RenderOutputAccordion from "./RenderOutputAccordian"
-
+import { fetchBotSlackChannels } from "@/lib/editor-utils"
 
 type Props={
     nodes:EditorNodeType[]
@@ -29,6 +29,13 @@ type Props={
 const EditorCanvasSidebar=({nodes}:Props)=>{
     const {state}=useEditor()
     const {nodeConnection}=useNodeConnections();
+    const  {googleFile, setSlackChannels}=useFuzzieStore();
+
+    useEffect(()=>{
+      if(nodeConnection.slackNode.slackAccessToken){
+        fetchBotSlackChannels(nodeConnection.slackNode.slackAccessToken, setSlackChannels)
+      }
+    },[])
 
     useEffect(()=>{
         console.log("Editor state", state)
@@ -48,6 +55,17 @@ const EditorCanvasSidebar=({nodes}:Props)=>{
 
     },[])
 
+   const DragDerect=useCallback(()=>{
+    console.log("cards",Object.entries(EditorCanvasDefaultCardTypes)
+    .filter(
+      ([_, cardType]) =>
+        (!nodes.length && cardType.type == 'Trigger') ||
+        (!nodes.length && cardType.type == 'Action')
+    ))
+
+
+   },[Object.entries(EditorCanvasDefaultCardTypes)])
+
 
 
     return (
@@ -64,8 +82,8 @@ const EditorCanvasSidebar=({nodes}:Props)=>{
                 {Object.entries(EditorCanvasDefaultCardTypes)
             .filter(
               ([_, cardType]) =>
-                (!nodes.length && cardType.type == 'Trigger') ||
-                (!nodes.length && cardType.type == 'Action')
+                ( cardType.type == 'Trigger') ||
+                ( cardType.type == 'Action')
             )
             .map(([cardKey, cardValue]) => (
               <Card

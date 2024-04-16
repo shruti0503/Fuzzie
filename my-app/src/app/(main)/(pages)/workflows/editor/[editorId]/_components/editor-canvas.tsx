@@ -49,8 +49,7 @@ function EditorCanvas(props: Props) {
     console.log("ediotr state", state)
 
     const onDrop = useCallback(
-         
-       
+        
       
         (event: any) => {
           event.preventDefault()
@@ -97,6 +96,7 @@ function EditorCanvas(props: Props) {
       }
       //@ts-ignore
       setNodes((nds) => nds.concat(newNode))
+      console.log("card in camvas", Object.entries(EditorCanvasDefaultCardTypes))
     },
     [reactFlowInstance, state]
   )

@@ -1,9 +1,13 @@
+import { listBotChannels } from "@/app/(main)/(pages)/connections/_actions/slack-connection";
 import { EditorCanvasCardType } from "./types";
 import { ConnectionProviderProps } from "@/providers/connection-providers";
-
+import { Option } from "@/components/ui/multiple-selector";
+import { EditorCanvasDefaultCardTypes } from "./constants/constants";
 export const onDragStart=(event:any, nodeType:EditorCanvasCardType['type'])=>{
+    console.log("DragStart", nodeType)
     event.dataTransfer.setData('application/reactflow', nodeType)
     event.dataTransfer.effectAllowed='move'
+    console.log("card", Object.entries(EditorCanvasDefaultCardTypes))
 }
 
 export const onSlackContent=(nodeConnection:ConnectionProviderProps, event:React.ChangeEvent<HTMLInputElement>)=>{
@@ -77,4 +81,11 @@ export const onContentChange = (
       ...prev,
       content: `${prev.content} ${template}`,
     }))
+  }
+
+  export const fetchBotSlackChannels = async (
+    token: string,
+    setSlackChannels: (slackChannels: Option[]) => void
+  ) => {
+    await listBotChannels(token)?.then((channels) => setSlackChannels(channels))
   }
