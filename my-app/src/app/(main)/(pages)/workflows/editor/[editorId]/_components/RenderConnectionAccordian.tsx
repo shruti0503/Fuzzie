@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ConnectionCard from '@/app/(main)/(pages)/connections/_components/connection-card'
 import { AccordionContent } from '@/components/ui/accordion'
 import { Connection } from '@/lib/types'
@@ -56,11 +56,13 @@ const RenderConnectionAccordian = ({
     connection: Connection
     state: EditorState
   })=> {
+
     const {
         title,
         image,
         description,
         connectionKey,
+        //@ts-ignore
         accessTokenKey,
         alwaysTrue,
         slackSpecial,
@@ -70,17 +72,32 @@ const RenderConnectionAccordian = ({
       const [open, setOpen] = React.useState(false)
       const [value, setValue] = React.useState('')
       const {slackChannels, selectedSlackChannels, setSelectedSlackChannels}=useFuzzieStore()
+     useEffect(()=>{
+      console.log("slack channeks", slackChannels)
+      console.log("slackSpecial",slackSpecial)
+      console.log("slack channeks", slackChannels.length)
 
+
+     },[])
 
       // WIP : salck channel fuxzie store
 
       const connectionData = (nodeConnection as any)[connectionKey]
+      console.log("nodeConnection[connectionKey]",nodeConnection[connectionKey])
 
+   console.log("connectionData", connectionData)
+   console.log("connectionKey",connectionKey)
+   console.log("connectionCheck",connection)
+   
       const isConnected =
         alwaysTrue ||
         (nodeConnection[connectionKey] &&
           accessTokenKey &&
-          connectionData[accessTokenKey!])
+          connectionData[accessTokenKey!] || connectionData[accessTokenKey])
+
+      console.log("slack conn", isConnected)
+      console.log("slackSpecial && isConnected",(slackSpecial && isConnected))
+
  
       return (
         <AccordionContent key={title}>

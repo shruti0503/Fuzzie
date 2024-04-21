@@ -21,10 +21,12 @@ export const onDiscordContent = (
     nodeConnection: ConnectionProviderProps,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+   
     nodeConnection.setDiscordNode((prev: any) => ({
       ...prev,
       content: event.target.value,
     }))
+    console.log("discord connect",nodeConnection.discordNode)
   }
 
   export const onNotionContent = (

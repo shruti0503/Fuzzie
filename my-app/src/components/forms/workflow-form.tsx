@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-
+import { onCreateWorkFlow } from '@/app/(main)/(pages)/workflows/editor/[editorId]/_actions/workFlowConnections'
 import {
   Form,
   FormControl,
@@ -24,7 +24,7 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Loader2 } from 'lucide-react'
 import { useModal } from '@/providers/modal-providers'
-//import { toast } from 'sonner'
+import { toast } from 'sonner'
 //import { onCreateWorkflow } from '@/app/(main)/(pages)/workflows/_actions/workflow-connections'
 //import { useModal } from '@/providers/modal-provider'
 
@@ -40,21 +40,33 @@ const Workflowform = ({ subTitle, title }: Props) => {
     resolver: zodResolver(WorkflowFormSchema),
     defaultValues: {
       name: '',
-     // description: '',
+      description: '',
     },
   })
 
   const isLoading = form.formState.isLoading
   const router = useRouter()
 
-  const handleSubmit = async (values: z.infer<typeof WorkflowFormSchema>) => {
-    // const workflow = await onCreateWorkflow(values.name, values.description)
-    // if (workflow) {
-    //   toast.message(workflow.message)
-    //   router.refresh()
-    // }
-    // setClose()
+  const onSubmit = async (values: z.infer<typeof WorkflowFormSchema>) => {
+    
+    console.log(" submit called caleed")
+    try{
+      //@ts-ignore
+      const workflow = await onCreateWorkFlow(values.name, values.description)
+      if (workflow) {
+
+        toast.message(workflow.message)
+        router.refresh()
+      }
+      setClose()
+    }
+    catch(err){
+      console.log(err)
+
+    }
+    
   }
+  //console.log('dkje')
 
   return (
     <Card className="w-full max-w-[650px] border-none">
@@ -65,9 +77,10 @@ const Workflowform = ({ subTitle, title }: Props) => {
         </CardHeader>
       )}
       <CardContent>
-        <Form {...form}>
+        <Form 
+        {...form} >
           <form
-            onSubmit={form.handleSubmit(handleSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4 text-left"
           >
             <FormField

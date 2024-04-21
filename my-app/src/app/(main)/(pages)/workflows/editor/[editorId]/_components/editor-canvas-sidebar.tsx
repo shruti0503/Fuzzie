@@ -40,6 +40,7 @@ const EditorCanvasSidebar=({nodes}:Props)=>{
     useEffect(()=>{
         console.log("Editor state", state)
        console.log("loaded")
+       console.log("connections are", CONNECTIONS)
        console.log("entried",Object.entries(EditorCanvasDefaultCardTypes)) // returns an array of enteries like this:
        // Email: { description: 'Send and email to a user', type: 'Action' } => equal to 
        console.log(Object.entries(EditorCanvasDefaultCardTypes.Email)) // gives 2 array ['desc', 'send email'] ['type', 'action]

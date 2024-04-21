@@ -181,5 +181,43 @@ export const onGetNodesEdges = async (flowId: string) => {
       if (response) return 'Notion template saved'
     }
   }
+
+  export const onGetWorkflows = async () => {
+    const user = await currentUser()
+    if (user) {
+      const workflow = await db.workflows.findMany({
+        where: {
+          userId: user.id,
+        },
+      })
+
+  
+      if (workflow){
+        console.log(workflow)
+         return workflow
+
+      } 
+    }
+  }
+
+  export const onCreateWorkFlow=async(name: string, description:string)=>{
+     
+    const user=await currentUser();
+
+    if(user){
+      const workflow=await db.workflows.create({
+        data:{
+          userId:user.id,
+          name,
+          description
+        },
+      })
+      if(workflow) return {message:'workflow created'}
+      return {message:'Oops! try aagain'}
+    }
+
+    
+
+  }
   
   

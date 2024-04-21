@@ -23,8 +23,9 @@ const ActionBtn = ( {currentService, nodeConnection, channels, setChannels}:Prop
   const onSendDiscordMessage = useCallback(async () => {
     const response = await postContentToWebHook(
       nodeConnection.discordNode.content,
-      nodeConnection.discordNode.webhookURL
-    )
+      //@ts-ignore WIP: idk y (workig only on )
+      nodeConnection.discordNode.url
+    )    
 
     if (response.message == 'success') {
       nodeConnection.setDiscordNode((prev: any) => ({

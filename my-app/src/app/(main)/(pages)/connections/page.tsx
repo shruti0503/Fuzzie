@@ -6,12 +6,15 @@ import { onNotionConnect } from './_actions/notion-connection'
 import { onSlackConnect } from './_actions/slack-connection'
 import { getUserData } from './_actions/get-user'
 import { onDiscordConnect } from './_actions/discord-connection'
-
+import { getDiscordConnectionUrl } from './_actions/discord-connection'
+import { useNodeConnections } from '@/providers/connection-providers'
 type Props = {
     searchParams?: { [key: string]: string | undefined }
   }
   
   const Connections = async (props: Props) => {
+    const {nodeConnection}=useNodeConnections();
+
     const {
       webhook_id,
       webhook_name,
@@ -57,6 +60,7 @@ type Props = {
   
     const onUserConnections = async () => {
       console.log(database_id)
+
       await onDiscordConnect(
         channel_id!,
         webhook_id!,
@@ -66,6 +70,13 @@ type Props = {
         guild_name!,
         guild_id!
       )
+
+      const url=await getDiscordConnectionUrl();
+      nodeConnection.setDiscordNode(url);
+      console.log("after setting",nodeConnection.discordNode)
+     
+
+
       await onNotionConnect(
         access_token!,
         workspace_id!,
