@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Automate yout app using Fuzzie",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
