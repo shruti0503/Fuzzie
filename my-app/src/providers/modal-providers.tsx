@@ -29,6 +29,7 @@ export const ModalContext= createContext<ModalContextType>({
 
 })
 // ModalProvider is a functional component ,that accepts props of type ModalProviderProps.
+// {children} here?
 const ModalProvider:React.FC<ModalProviderProps>=({children})=>{
 
     const [isOpen, setIsOpen]=useState(false)
