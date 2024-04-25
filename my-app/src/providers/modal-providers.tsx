@@ -30,6 +30,7 @@ export const ModalContext= createContext<ModalContextType>({
 })
 // ModalProvider is a functional component ,that accepts props of type ModalProviderProps.
 // {children} here?
+//about seprate reducers
 const ModalProvider:React.FC<ModalProviderProps>=({children})=>{
 
     const [isOpen, setIsOpen]=useState(false)
