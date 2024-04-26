@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { menuOptions } from '@/lib/constants/constants'
@@ -8,6 +8,7 @@ import clsx from 'clsx'
 import { Separator } from "@/components/ui/separator"
 import { LucideMousePointerClick , GitBranch, Database} from 'lucide-react'
 import { ModeToggle } from '../global/mode-toggle'
+import { LoadingStore } from '@/store'
 
 import {
     Tooltip,
@@ -21,6 +22,13 @@ type Props = {}
 
 const MenuOptions = (props: Props) => {
     const pathName = usePathname();
+    const [path, setPath]=useState();
+    const {setLoader,loader}=LoadingStore();
+    const checkPath=(loc:any)=>{
+        pathName===loc ? setLoader(false) : setLoader(true)
+    }
+
+
     return (
         <nav className='dark:bg-black h-screen overflow-scroll justify-between flex items-center flex-col gap-10 py-6 px-2'>
             <div className='flex items-center flex-col gap-8'>
@@ -32,7 +40,10 @@ const MenuOptions = (props: Props) => {
                         <ul key={menuItem.name}>
                             <Tooltip delayDuration={0}>
                                 <TooltipTrigger>
-                                <li>
+                                <li 
+                                //@ts-ignore
+                                onClick={checkPath(menuItem.href)}
+                                >
                                 <Link href={menuItem.href} 
                                 className={clsx('group h-8 w-8 flex items-center justify-center scale-[1.5] rounded-lg p-[-3px] cursor-pointer',{
                                  'dark:bg-[#2F0068] bg-[#EEE0FF]': pathName===menuItem.href
@@ -42,6 +53,8 @@ const MenuOptions = (props: Props) => {
                                 // in the pbject the menuItem has a jsx compoent as a value of an pbject
 
                                     selected={pathName===menuItem.href}
+
+
 
                                     />
                                    

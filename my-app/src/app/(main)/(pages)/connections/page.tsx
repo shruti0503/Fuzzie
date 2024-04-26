@@ -7,13 +7,15 @@ import { onSlackConnect } from './_actions/slack-connection'
 import { getUserData } from './_actions/get-user'
 import { onDiscordConnect } from './_actions/discord-connection'
 import { getDiscordConnectionUrl } from './_actions/discord-connection'
-import { useNodeConnections } from '@/providers/connection-providers'
+//import { useNodeConnections } from '@/providers/connection-providers'
+import {ConnectionsProvider, useNodeConnections } from '@/providers/connection-providers'
 type Props = {
     searchParams?: { [key: string]: string | undefined }
   }
   
   const Connections = async (props: Props) => {
-    const {nodeConnection}=useNodeConnections();
+   // const {nodeConnection}=useNodeConnections(); -> WIP why giving type error
+   //const {nodeConnection}=useNodeConnections();
 
     const {
       webhook_id,
@@ -55,6 +57,7 @@ type Props = {
       team_name: '',
     }
   
+    
     const user = await currentUser()
     if (!user) return null
   
@@ -71,9 +74,9 @@ type Props = {
         guild_id!
       )
 
-      const url=await getDiscordConnectionUrl();
-      nodeConnection.setDiscordNode(url);
-      console.log("after setting",nodeConnection.discordNode)
+      // const url=await getDiscordConnectionUrl();
+      // nodeConnection?.setDiscordNode(url);
+      // console.log("after setting",nodeConnection?.discordNode)
      
 
 

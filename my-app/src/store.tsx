@@ -29,5 +29,17 @@ export interface Option {
       set({ selectedSlackChannels }),
   }))
 
+  export const LoadingState={
+    loader: false,
+    setLoader: (loader:boolean)=>  {}
+  }
+
+  export const LoadingStore = create<typeof LoadingState>((set) => ({
+    ...LoadingState,
+    setLoader: (loader: boolean) => set({ loader })
+  }));
+  
+  
+
   //googleFile and slackChannels are state variables initialized with empty arrays or objects.
 //setGoogleFile and setSlackChannels are functions that update the googleFile and slackChannels state variables, respectively. They accept new values as parameters and use the set function to update the state.
