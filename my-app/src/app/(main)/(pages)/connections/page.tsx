@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ConnectionCard from './_components/connection-card'
 import { CONNECTIONS } from '@/lib/constants/constants'
@@ -8,14 +9,21 @@ import { getUserData } from './_actions/get-user'
 import { onDiscordConnect } from './_actions/discord-connection'
 import { getDiscordConnectionUrl } from './_actions/discord-connection'
 //import { useNodeConnections } from '@/providers/connection-providers'
+import { Check } from './new'
 import {ConnectionsProvider, useNodeConnections } from '@/providers/connection-providers'
 type Props = {
     searchParams?: { [key: string]: string | undefined }
   }
+
+//  const check=()=>{
+//   const {nodeConnection}=useNodeConnections();
+//   console.log("connections on connections page", nodeConnection)
+
+//  }
   
   const Connections = async (props: Props) => {
-   // const {nodeConnection}=useNodeConnections(); -> WIP why giving type error
-   //const {nodeConnection}=useNodeConnections();
+   //const {nodeConnection}=useNodeConnections(); // -> WIP why giving type error
+    Check()
 
     const {
       webhook_id,
@@ -56,15 +64,19 @@ type Props = {
       team_id: '',
       team_name: '',
     }
+    console.log("props seacth", props.searchParams)
   
     
     const user = await currentUser()
     if (!user) return null
   
+
+   
+  
     const onUserConnections = async () => {
       console.log(database_id)
 
-      await onDiscordConnect(
+     const ans= await onDiscordConnect(
         channel_id!,
         webhook_id!,
         webhook_name!,
@@ -73,12 +85,11 @@ type Props = {
         guild_name!,
         guild_id!
       )
+      console.log("ans is", ans)
 
       // const url=await getDiscordConnectionUrl();
       // nodeConnection?.setDiscordNode(url);
       // console.log("after setting",nodeConnection?.discordNode)
-     
-
 
       await onNotionConnect(
         access_token!,
@@ -103,6 +114,7 @@ type Props = {
       const connections: any = {}
   
       const user_info = await getUserData(user.id)
+      console.log("user_info", user_info)
   
       //get user info with all connections
       user_info?.connections.map((connection) => {
@@ -116,8 +128,10 @@ type Props = {
     }
   
     const connections = await onUserConnections()
+    console.log("connection function called", connections)
   
     return (
+      <ConnectionsProvider>
       <div className="relative flex flex-col gap-4">
         <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
           Connections
@@ -139,6 +153,7 @@ type Props = {
           </section>
         </div>
       </div>
+      </ConnectionsProvider>
     )
   }
   

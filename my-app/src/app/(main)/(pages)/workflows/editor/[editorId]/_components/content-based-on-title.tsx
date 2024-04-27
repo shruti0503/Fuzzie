@@ -1,10 +1,15 @@
+
 import { AccordionContent } from '@/components/ui/accordion'
 //import { ConnectionProviderProps } from '@/providers/connections-provider'
 import { ConnectionProviderProps } from '@/providers/connection-providers'
 import { EditorState } from '@/providers/editor-provider'
 import { nodeMapper } from '@/lib/types'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { getUser } from '@/app/(main)/(pages)/connectionUtil'
+import { onUserConnections } from '@/app/(main)/(pages)/connectionUtil'
+import { getUserData } from '@/app/(main)/(pages)/connections/_actions/get-user'
 import { getDiscordConnectionUrl } from '@/app/(main)/(pages)/connections/_actions/discord-connection'
+import { getSlackConnection } from '@/app/(main)/(pages)/connections/_actions/slack-connection'
 import {
   Card,
   CardContent,
@@ -19,6 +24,8 @@ import { toast } from 'sonner'
 import axios from 'axios'
 import GoogleDriveFiles from './google-drive-files'
 import ActionBtn from './action-btn'
+import { currentUser } from '@clerk/nextjs'
+import { getNotionConnection } from '@/app/(main)/(pages)/connections/_actions/notion-connection'
 export interface Option {
   value: string
   label: string
@@ -50,9 +57,15 @@ const ContentBasedOnTitle = ({
   setSelectedSlackChannels,
 }: Props) => {
   const { selectedNode } = newState.editor
-  const title = selectedNode.data.title
+  const [title, setTitle]=useState('');
+ 
 
-  console.log("title is", selectedNode)
+  useEffect(()=>{
+    console.log("title is of selectedNode", selectedNode)
+    setTitle( selectedNode.data.title)
+
+  },[selectedNode])
+
 
   useEffect(() => {
     const reqGoogle = async () => {
@@ -76,13 +89,33 @@ const ContentBasedOnTitle = ({
     
     }
     reqGoogle()
+    setConnections();
   }, [])
 
+  const setConnections=async()=>{
+    console.log("setConnections")
+   //const user= await getUser(); 
+   //console.log("userk", user)
+   //@ts-ignore
+   // const user_info=await getUserData(user?.id);
+    //console.log("user_info in compritl", user_info)
+  }
+
   const setDiscNode= async()=>{
-    const url=await getDiscordConnectionUrl();
+       const url=await getDiscordConnectionUrl();
       nodeConnection.setDiscordNode(url);
       console.log("after setting",nodeConnection.discordNode)
+      const slackurl=await getSlackConnection();
+      nodeConnection.setSlackNode(slackurl);
+      console.log("sklack node",nodeConnection.slackNode);
+      const  notionUrl=await getNotionConnection();
+      nodeConnection.setNotionNode(notionUrl);
+      console.log("notion node", nodeConnection.notionNode)
+
+
   }
+    
+
   console.log("dic",nodeConnection.discordNode)
 
   useEffect(()=>{
@@ -102,7 +135,7 @@ const ContentBasedOnTitle = ({
   //@ts-ignore
   const nodeConnectionType: any = nodeConnection[nodeMapper[title]]
   console.log("nodeCOnnection",nodeConnectionType)
-  if (!nodeConnectionType) return <p>Not connected</p>
+  //if (!nodeConnectionType) return <p>Not connected</p>
 
   //const url = await getDiscordConnectionUrl();
   //console.log("url is", url)
@@ -111,22 +144,22 @@ const ContentBasedOnTitle = ({
 
 
 
-  const isConnected =
-    title === 'Google Drive'  ? !nodeConnection.isLoading : nodeConnectionType[
-          `${
-            title === 'Slack'
-              ? 'slackAccessToken'
-              : title === 'Discord'
-              ? 'webhookURL'
-              : title === 'Notion'
-              ? 'accessToken'
-              : ''
-          }`
-        ]
+  // const isConnected =
+  //   title === 'Google Drive'  ? !nodeConnection?.isLoading : nodeConnectionType[
+  //         `${
+  //           title === 'Slack'
+  //             ? 'slackAccessToken'
+  //             : title === 'Discord'
+  //             ? 'webhookURL'
+  //             : title === 'Notion'
+  //             ? 'accessToken'
+  //             : ''
+  //         }`
+  //       ]
 
-        console.log("isconnected", isConnected)
+  //       console.log("isconnected", isConnected)
 
- // if (!isConnected) return <p>Not connected</p>
+  //if (!isConnected) return <p>Not connected</p>
 
   return (
     <AccordionContent>
@@ -141,10 +174,10 @@ const ContentBasedOnTitle = ({
           <p>{title === 'Notion' ? 'Values to be stored' : 'Message'}</p>
 
          
-
+  
           <Input
             type="text"
-            value={nodeConnectionType.content}
+            value={nodeConnectionType?.content}
             onChange={(event) => onContentChange(nodeConnection, title, event)}
           />
 
@@ -164,7 +197,8 @@ const ContentBasedOnTitle = ({
               </CardContent>
             </Card>
           )}
-          {title === 'Google Drive' && <GoogleDriveFiles />}
+          
+          {title == 'Google Drive' && <GoogleDriveFiles />}
           <ActionBtn
             currentService={title}
             nodeConnection={nodeConnection}

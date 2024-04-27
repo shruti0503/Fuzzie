@@ -58,6 +58,7 @@ export const getNotionConnection = async () => {
       },
     })
     if (connection) {
+      console.log("connection in getNotionConnection", connection)
       return connection
     }
   }

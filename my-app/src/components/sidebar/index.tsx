@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import { LucideMousePointerClick , GitBranch, Database} from 'lucide-react'
 import { ModeToggle } from '../global/mode-toggle'
 import { LoadingStore } from '@/store'
-
+import { ConnectionsProvider,useNodeConnections } from '@/providers/connection-providers'
 import {
     Tooltip,
     TooltipContent,
@@ -23,10 +23,15 @@ type Props = {}
 const MenuOptions = (props: Props) => {
     const pathName = usePathname();
     const [path, setPath]=useState();
-    const {setLoader,loader}=LoadingStore();
-    const checkPath=(loc:any)=>{
-        pathName===loc ? setLoader(false) : setLoader(true)
-    }
+    const {nodeConnection}=useNodeConnections();
+   // const {setLoader,loader}=LoadingStore();
+    // const checkPath=(loc:any)=>{
+    //     pathName===loc ? setLoader(false) : setLoader(true)
+    // }
+    useEffect(()=>{
+        console.log("connections on connections page", nodeConnection)
+
+    },[])
 
 
     return (
@@ -42,7 +47,7 @@ const MenuOptions = (props: Props) => {
                                 <TooltipTrigger>
                                 <li 
                                 //@ts-ignore
-                                onClick={checkPath(menuItem.href)}
+                               // onClick={checkPath(menuItem.href)}
                                 >
                                 <Link href={menuItem.href} 
                                 className={clsx('group h-8 w-8 flex items-center justify-center scale-[1.5] rounded-lg p-[-3px] cursor-pointer',{

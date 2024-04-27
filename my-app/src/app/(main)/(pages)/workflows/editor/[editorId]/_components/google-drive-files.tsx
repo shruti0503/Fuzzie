@@ -33,6 +33,7 @@ const GoogleDriveFiles = (props: Props) => {
 
   useEffect(() => {
     onListener()
+    console.log("comp called")
   }, [])
 
   return (
