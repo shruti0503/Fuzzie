@@ -1,3 +1,6 @@
+//API route handler that handles webhook notifications from Google Drive about changes in the user's Drive. It then triggers various actions based on predefined workflows stored in the database. 
+
+
 import { postContentToWebHook } from '@/app/(main)/(pages)/connections/_actions/discord-connection'
 import { onCreateNewPageInDatabase } from '@/app/(main)/(pages)/connections/_actions/notion-connection'
 import { postMessageToSlack } from '@/app/(main)/(pages)/connections/_actions/slack-connection'
@@ -7,6 +10,7 @@ import { headers } from 'next/headers'
 import { NextRequest } from 'next/server'
 
 export async function POST(req: NextRequest) {
+
   console.log('🔴 Changed')
   const headersList = headers()
   let channelResourceId
@@ -31,6 +35,7 @@ export async function POST(req: NextRequest) {
       })
       if (workflow) {
         workflow.map(async (flow) => {
+            // getting the specofic flow and converting it
           const flowPath = JSON.parse(flow.flowPath!)
           let current = 0
           while (current < flowPath.length) {
