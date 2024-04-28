@@ -91,7 +91,7 @@ export const onCreateNewPageInDatabase = async (
       database_id: databaseId,
     },
     properties: {
-      name: [
+      Name: [
         {
           text: {
             content: content,
@@ -101,6 +101,7 @@ export const onCreateNewPageInDatabase = async (
     },
   })
   if (response) {
+    console.log("note", response)
     return response
   }
 }

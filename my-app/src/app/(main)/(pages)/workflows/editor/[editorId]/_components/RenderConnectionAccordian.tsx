@@ -4,6 +4,8 @@ import { AccordionContent } from '@/components/ui/accordion'
 import { Connection } from '@/lib/types'
 import { useNodeConnections } from '@/providers/connection-providers'
 import { EditorState } from '@/providers/editor-provider'
+import { fetchBotSlackChannels } from '@/lib/editor-utils'
+
 import {
     Command,
     CommandEmpty,
@@ -72,6 +74,10 @@ const RenderConnectionAccordian = ({
       const [open, setOpen] = React.useState(false)
       const [value, setValue] = React.useState('')
       const {slackChannels, selectedSlackChannels, setSelectedSlackChannels}=useFuzzieStore()
+      const [slackSpecialstate, setSlackSpecialState]=React.useState();
+      const [icConnState, setIsConnState]=React.useState(false);
+      const  {googleFile, setSlackChannels}=useFuzzieStore();
+      
      useEffect(()=>{
       console.log("slack channeks", slackChannels)
       console.log("slackSpecial",slackSpecial)
@@ -98,6 +104,19 @@ const RenderConnectionAccordian = ({
       console.log("slack conn", isConnected)
       console.log("slackSpecial && isConnected",(slackSpecial && isConnected))
 
+    useEffect(()=>{
+      //@ts-ignore
+      setSlackSpecialState(slackSpecial)
+      setIsConnState(isConnected)
+
+    },[isConnected, slackSpecial])
+
+    useEffect(()=>{
+      if(nodeConnection.slackNode.slackAccessToken){
+        fetchBotSlackChannels(nodeConnection.slackNode.slackAccessToken, setSlackChannels)
+      }
+    },[])
+
  
       return (
         <AccordionContent key={title}>
@@ -110,7 +129,7 @@ const RenderConnectionAccordian = ({
                 type={title}
                 connected={{ [title]: isConnected }}
               />
-              {slackSpecial && isConnected && (
+              {slackSpecialstate && icConnState && (
                 <div className="p-6">
                   { 
                   slackChannels?.length ? (

@@ -34,7 +34,7 @@
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "cmdk": "^1.0.0",
+    "cmdk": "^0.2.0",
     "D": "^1.0.0",
     "drawer": "^0.0.2",
     "framer-motion": "^11.0.24",

@@ -61,10 +61,11 @@ const ActionBtn = ( {currentService, nodeConnection, channels, setChannels}:Prop
 
 
   const onStoreNotionContent = useCallback(async () => {
-    console.log(
-      nodeConnection.notionNode.databaseId,
-      nodeConnection.notionNode.accessToken,
-      nodeConnection.notionNode.content
+    console.log("jaa na", 
+    nodeConnection.notionNode.databaseId,
+    nodeConnection.notionNode.accessToken,
+    nodeConnection.notionNode.content
+
     )
     const response = await onCreateNewPageInDatabase(
       nodeConnection.notionNode.databaseId,
