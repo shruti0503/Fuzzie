@@ -176,21 +176,21 @@ function EditorCanvas(props: Props) {
         []
       )
 
-    //   const onGetWorkFlow = async () => {
-    //     setIsWorkFlowLoading(true)
-    //     const response = await onGetNodesEdges(pathname.split('/').pop()!)
-    //     if (response) {
-    //       setEdges(JSON.parse(response.edges!))
-    //       setNodes(JSON.parse(response.nodes!))
-    //       setIsWorkFlowLoading(false)
-    //     }
-    //     setIsWorkFlowLoading(false)
-    //   }
+      const onGetWorkFlow = async () => {
+        setIsWorkFlowLoading(true)
+        const response = await onGetNodesEdges(pathname.split('/').pop()!)
+        if (response) {
+          setEdges(JSON.parse(response.edges!))
+          setNodes(JSON.parse(response.nodes!))
+          setIsWorkFlowLoading(false)
+        }
+        setIsWorkFlowLoading(false)
+      }
 
 
-    //   useEffect(() => {
-    //     onGetWorkFlow()
-    //   }, [])
+      useEffect(() => {
+        onGetWorkFlow()
+      }, [])
 
 
 

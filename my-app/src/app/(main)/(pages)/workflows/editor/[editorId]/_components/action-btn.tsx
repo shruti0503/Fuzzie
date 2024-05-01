@@ -27,7 +27,7 @@ const ActionBtn = ( {currentService, nodeConnection, channels, setChannels}:Prop
       nodeConnection.discordNode.url
     )    
 
-    if (response.message == 'success') {
+    if (response?.message == 'success') {
       nodeConnection.setDiscordNode((prev: any) => ({
         ...prev,
         content: '',

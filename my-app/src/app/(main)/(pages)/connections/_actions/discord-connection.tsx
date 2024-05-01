@@ -112,14 +112,21 @@ export const getDiscordConnectionUrl = async () => {
 export const postContentToWebHook = async (content: string, url: string) => {
   console.log(content)
   console.log("url is", url)
-  if (content != '') {
-    const posted = await axios.post(url, { content })
-    if (posted) {
-      return { message: 'success' }
+  try{
+    if (content != '') {
+      const posted = await axios.post(url, { content })
+      if (posted) {
+        return { message: 'success' }
+      }
+      return { message: 'failed request' }
     }
-    return { message: 'failed request' }
+    return { message: 'String empty' }
+
   }
-  return { message: 'String empty' }
+  catch(err){
+    console.log("error mila", err)
+  }
+ 
 }
 
 export const postContentWebHook=async(content:string, url:string)=>{

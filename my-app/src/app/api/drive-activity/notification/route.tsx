@@ -34,8 +34,9 @@ export async function POST(req: NextRequest) {
         },
       })
       if (workflow) {
+        console.log("workFlow is", workflow)
         workflow.map(async (flow) => {
-            // getting the specofic flow and converting it
+            // getting the specofic flow and converting it into
           const flowPath = JSON.parse(flow.flowPath!)
           let current = 0
           while (current < flowPath.length) {
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
               })
               if (discordMessage) {
                 await postContentToWebHook(
-                  flow.discordTemplate!,
+                  "template",
                   discordMessage.url
                 )
                 flowPath.splice(flowPath[current], 1)

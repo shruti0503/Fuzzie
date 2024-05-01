@@ -11,7 +11,7 @@ type Props = {}//listemner changes
 const GoogleDriveFiles = (props: Props) => {
   const [loading, setLoading] = useState(false)
   const [isListening, setIsListening] = useState(false)
-
+  
   const reqGoogle = async () => {
     setLoading(true)
     const response = await axios.get('/api/drive-activity')
@@ -19,6 +19,9 @@ const GoogleDriveFiles = (props: Props) => {
       toast.message(response.data)
       setLoading(false)
       setIsListening(true)
+    }
+    else{
+      setIsListening(false)
     }
     setIsListening(false)
   }
@@ -31,7 +34,8 @@ const GoogleDriveFiles = (props: Props) => {
   }
 
   useEffect(() => {
-    onListener()
+     onListener()
+    setIsListening(false)
     console.log("comp called")
   }, [])
 
