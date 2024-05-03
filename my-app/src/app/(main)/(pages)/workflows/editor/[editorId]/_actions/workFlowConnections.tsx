@@ -16,7 +16,12 @@ export const getGoogleListener=async()=>{
           },
         })
     
-        if (listener) return listener
+        if (listener){
+          console.log("listenr", listener)
+
+          return listener
+
+        } 
       }
       
 }

@@ -28,10 +28,10 @@ const MenuOptions = (props: Props) => {
     // const checkPath=(loc:any)=>{
     //     pathName===loc ? setLoader(false) : setLoader(true)
     // }
-    useEffect(()=>{
-        console.log("connections on connections page", nodeConnection)
+    // useEffect(()=>{
+    //     console.log("connections on connections page", nodeConnection)
 
-    },[])
+    // },[])
 
 
     return (

@@ -127,10 +127,15 @@ function EditorCanvas(props: Props) {
       )
     
       const onConnect = useCallback(
-        (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+        (params: Edge | Connection) => {
+            console.log("connect");
+            console.log("edges", edges)
+            console.log("nodes", nodes)
+            setEdges((eds) => addEdge(params, eds));
+        },
         []
-      )
-
+    );
+    
 
       const handleClickCanvas = () => {
         dispatch({
@@ -155,6 +160,8 @@ function EditorCanvas(props: Props) {
 
 
       useEffect(() => {
+        console.log("edges", edges)
+        console.log("nodes", nodes)
         dispatch({ type: 'LOAD_DATA', payload: { edges, elements: nodes } })
       }, [nodes, edges])
 
@@ -180,6 +187,7 @@ function EditorCanvas(props: Props) {
         setIsWorkFlowLoading(true)
         const response = await onGetNodesEdges(pathname.split('/').pop()!)
         if (response) {
+          console.log("got work", response)
           setEdges(JSON.parse(response.edges!))
           setNodes(JSON.parse(response.nodes!))
           setIsWorkFlowLoading(false)

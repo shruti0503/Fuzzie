@@ -70,6 +70,8 @@ const RenderConnectionAccordian = ({
         slackSpecial,
       } = connection
 
+
+      
       const { nodeConnection } = useNodeConnections()
       const [open, setOpen] = React.useState(false)
       const [value, setValue] = React.useState('')
@@ -113,7 +115,8 @@ const RenderConnectionAccordian = ({
 
     useEffect(()=>{
       if(nodeConnection.slackNode.slackAccessToken){
-        fetchBotSlackChannels(nodeConnection.slackNode.slackAccessToken, setSlackChannels)
+
+       fetchBotSlackChannels(nodeConnection.slackNode.slackAccessToken, setSlackChannels)
       }
     },[])
 

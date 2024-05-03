@@ -25,6 +25,10 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
  
 //responsible for initiating the process of creating or updating nodes and edges in the workflow
  const onFlowAutomation=useCallback(async()=>{
+
+  console.log("connectIns");
+  console.log("edges", edges)
+  console.log("nodes", nodes)
     const flow=await onCreateNodesEdges(
         pathname.split('/').pop()!,
         JSON.stringify(nodes),
@@ -49,7 +53,7 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
     const connectedEdges = edges.map((edge) => edge.target)
     // for each target , seahces thright the nodes array to find the -> node with same id 
     connectedEdges.map((target) => {
-      nodes.forEach((node) => {
+      nodes.forEach((node) => { 
         if (node.id === target) { // if the id matches 
           flows.push(node.type) // retrive its type property and push it into flows array
         }

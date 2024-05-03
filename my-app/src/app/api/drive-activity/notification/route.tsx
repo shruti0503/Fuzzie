@@ -10,7 +10,6 @@ import { headers } from 'next/headers'
 import { NextRequest } from 'next/server'
 
 export async function POST(req: NextRequest) {
-
   console.log('🔴 Changed')
   const headersList = headers()
   let channelResourceId
@@ -34,9 +33,7 @@ export async function POST(req: NextRequest) {
         },
       })
       if (workflow) {
-        console.log("workFlow is", workflow)
         workflow.map(async (flow) => {
-            // getting the specofic flow and converting it into
           const flowPath = JSON.parse(flow.flowPath!)
           let current = 0
           while (current < flowPath.length) {
@@ -51,7 +48,7 @@ export async function POST(req: NextRequest) {
               })
               if (discordMessage) {
                 await postContentToWebHook(
-                  "template",
+                  flow.discordTemplate!,
                   discordMessage.url
                 )
                 flowPath.splice(flowPath[current], 1)
