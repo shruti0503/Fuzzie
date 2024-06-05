@@ -123,9 +123,13 @@ const ContentBasedOnTitle = ({
    //setFile,
   // selectedSlackChannels,
    //setSelectedSlackChannels,
+
    
    ) 
+
    setDiscNode()
+
+   
  
  
 
